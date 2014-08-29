@@ -20,24 +20,51 @@ Animator.prototype.createWalls = function (room, direction) {
 	var backWall = new BackWall(room.walls[direction]);
 	if (direction === 3) { direction = -1 }
 	var rightWall = new RightWall(room.walls[direction + 1]);
-	if (direction === 1) { direction = -3 } else if ( direction === 2) { direction = -2 } else if (direction === 1) { direction = -1 }
+	if (direction === 1) { direction = -3 } else if ( direction === 2) { direction = -2 } else if (direction === 3) { direction = -1 }
 	var leftWall = new LeftWall(room.walls[direction + 3]);
 
 	return [backWall, rightWall, leftWall];
 }
 
-Animator.prototype.createFloorCeiling = function (floorUrl, ceilUrl) {
-	var floor = new Floor(floorUrl);
-	var ceiling = new Ceiling(ceilUrl);
-
-	console.log(floorUrl, ceilUrl);
+Animator.prototype.createFloorCeiling = function (room, direction) {
+	var floor = new Floor(room.floor);
+	var ceiling = new Ceiling(room.ceiling);
 
 	return [floor, ceiling];
 }
 
+Animator.prototype.createDoors = function (room, direction, moveArr) {
+	doors = []
+
+	if (moveArr[direction] === true) {
+		var backDoor = new BackDoor(room.door);
+		doors.push(backDoor);
+	}
+	if (direction === 3) { direction = -1 }
+	if (moveArr[direction + 1]) {
+		var rightDoor = new RightDoor(room.door);
+		doors.push(rightDoor);
+	}
+	if (direction === 1) { direction = -3 } else if (direction === 2) { direction = -2 } else if (direction === 3) { direction = -1 }
+	if (moveArr[direction + 3]) {
+		var leftDoor = new LeftDoor(room.door);
+		doors.push(leftDoor);
+	}
+
+	if (moveArr[4]) {
+		var ceilingDoor = new CeilingDoor(room.door);
+		doors.push(ceilingDoor);
+	}
+	if (moveArr[5]) {
+		var floorDoor = new FloorDoor(room.door);
+		doors.push(floorDoor);
+	}
+
+	return doors;
+}
+
 Animator.prototype.addAnim = function (artArr) {
 	for ( var i = 0; i < artArr.length; i++ ) {
-		console.log(artArr[i])
 		this.scene.add(artArr[i].mesh);
 	}
 }
@@ -64,8 +91,10 @@ $(document).ready(function () {
 
 	// 	animator.render();
 	// }, 2000);
-	var game = new Game();
-	game.animator.addAnim(game.animator.createWalls(game.grid.gridState[0][0][0], 3));
-	game.animator.addAnim(game.animator.createFloorCeiling(FLOORURLS[0], CEILURLS[0]));
+	var game = new Game(ZDEP, YROW, XCOL);
+	console.log(game.grid.gridState);
+	game.animator.addAnim(game.animator.createWalls(game.grid.gridState[1][5][5], 0));
+	game.animator.addAnim(game.animator.createFloorCeiling(game.grid.gridState[1][5][5]));
+	game.animator.addAnim(game.animator.createDoors(game.grid.gridState[1][5][5], 0, game.grid.legalMoves(1,5,5)));
 	game.animator.render();
 })

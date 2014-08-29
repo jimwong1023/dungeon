@@ -64,6 +64,7 @@ function Floor (url) {
 }
 
 // DOORS
+// Find better solution for rendering doors in different positions
 
 function BackDoor (url) {
 	this.texture = new THREE.ImageUtils.loadTexture(url);
@@ -74,4 +75,52 @@ function BackDoor (url) {
 	this.mesh = new THREE.Mesh( this.geometry, this.material );
 
 	this.mesh.position.set(0, 90,-199);
+}
+
+function RightDoor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 100, 180, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(199, 90, 0);
+	this.mesh.rotation.y = Math.PI/2;
+}
+
+function LeftDoor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 100, 180, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(-199, 90, 0);
+	this.mesh.rotation.y = Math.PI/2;
+}
+
+function FloorDoor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 100, 180, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(0, 1, 0);
+	this.mesh.rotation.x = -Math.PI/2;
+}
+
+function CeilingDoor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 100, 180, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(0, 239, -20);
+	this.mesh.rotation.x = -Math.PI/2;
 }
