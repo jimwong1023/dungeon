@@ -1,0 +1,77 @@
+var WALLURLS = ["<%= asset_path('wallpaper0.jpg') %>", "<%= asset_path('wallpaper1.jpg') %>", "<%= asset_path('wallpaper2.jpg') %>", "<%= asset_path('wallpaper3.jpg') %>", "<%= asset_path('wallpaper4.jpg') %>", "<%= asset_path('wallpaper5.jpg') %>"]
+var FLOORURLS = ["<%= asset_path('floor0.jpg') %>", "<%= asset_path('floor1.jpg') %>"]
+var DOORURLS = ["<%= asset_path('door0.jpg') %>"]
+var CEILURLS = ["<%= asset_path('ceiling0.jpg') %>"]
+
+// Walls and Floors
+
+function RightWall (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 400, 240, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.rotation.y = Math.PI/2;
+	this.mesh.position.set(200,120,0);
+}
+
+function LeftWall (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 400, 240, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.rotation.y = Math.PI/2;
+	this.mesh.position.set(-200,120,0);
+}
+
+function BackWall (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 400, 240, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(0,120,-200);
+}
+
+function Ceiling (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 400, 400, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.rotation.y = Math.PI/2;
+	this.mesh.position.set(0,200,0);
+}
+
+function Floor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 400, 400, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.rotation.y = Math.PI/2;
+}
+
+// DOORS
+
+function BackDoor (url) {
+	this.texture = new THREE.ImageUtils.loadTexture(url);
+	this.texture.wrapS = this.texture.wrapT = THREE.RepeatWrapping;
+
+	this.material = new THREE.MeshBasicMaterial( { map: this.texture, side: THREE.DoubleSide } );
+	this.geometry = new THREE.PlaneGeometry( 100, 180, 1, 1 );
+	this.mesh = new THREE.Mesh( this.geometry, this.material );
+
+	this.mesh.position.set(0, 90,-199);
+}

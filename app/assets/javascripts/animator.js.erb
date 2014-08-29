@@ -1,0 +1,32 @@
+function Animator () {
+	this.scene = new THREE.Scene();
+	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	this.renderer = new THREE.WebGLRenderer();
+	this.renderer.setSize( window.innerWidth, window.innerHeight);
+	document.body.appendChild( this.renderer.domElement );
+	this.look = new THREE.Vector3(0, 100, 0);
+	this.camera.position.set(0, 150, 200);
+	this.camera.lookAt(this.look);
+}
+
+Animator.prototype.render = function () {
+	requestAnimationFrame( this.render.bind(this) );
+	this.renderer.render(this.scene, this.camera);
+}
+
+Animator.prototype.addAnim = function (art) {
+	this.scene.add(art.mesh);
+}
+
+$(document).ready(function () {
+	var url = "<%= asset_path('wallpaper1.jpg') %>"
+	var url2 = "<%= asset_path('wallpaper2.jpg') %>"
+	var animator = new Animator();
+	var rightWall = new RightWall(WALLURLS[3]);
+	var leftWall = new LeftWall(WALLURLS[2]);
+
+	animator.addAnim(rightWall);
+	animator.addAnim(leftWall);
+
+	animator.render();
+})
