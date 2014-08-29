@@ -1,9 +1,10 @@
-var YROW = 10
-var XCOL = 10
-var ZDEP = 3
+var YROW = 10;
+var XCOL = 10;
+var ZDEP = 3;
 
 function Game (z, y, x) {
-	this.grid = new grid(x, y, z);
+	this.grid = new Grid(x, y, z);
+	this.animator = new Animator();
 }
 
 // Grid
@@ -14,12 +15,13 @@ function Grid (z, y, x) {
 }
 
 Grid.prototype.clearGridState = function (z, y, x) {
+	//Generate new Z by Y by X grid
 	for ( var dep = 0; dep < z; dep++ ) {
 		this.gridState[dep] = [];
 		for ( var row = 0; row < y; row++ ) {
 			this.gridState[dep][row] = [];
 			for ( var col = 0; col < x; col++ ) {
-				var room = new Room();
+				var room = new Room(dep, row, col);
 				this.gridState[dep][row].push(room);
 			}
 		}
@@ -27,13 +29,36 @@ Grid.prototype.clearGridState = function (z, y, x) {
 }
 
 // Room
-function Room () {
+function Room (z, y, x) {
 	this.solid = this.isSolid();
+	this.players = [];
 	this.items = [];
+	// May want to just randomize single wall texture to save on processing time.
+	this.wall0 = WALLURLS[Math.floor(Math.random() * WALLURLS.length)];
+	this.wall1 = WALLURLS[Math.floor(Math.random() * WALLURLS.length)];
+	this.wall2 = WALLURLS[Math.floor(Math.random() * WALLURLS.length)];
+	this.wall3 = WALLURLS[Math.floor(Math.random() * WALLURLS.length)];
+	this.walls = [this.wall0, this.wall1, this.wall2, this.wall3];
+
+	this.gridZ = z;
+	this.gridY = y;
+	this.gridX = x;
 }
 
 Room.prototype.isSolid = function () {
 	if (Math.random() > 0.2) {
 		return false;
 	}
+}
+
+// Player
+
+function Player () {
+	this.directions = [0,1,2,3];
+	this.direction = 0;
+	this.items = [];
+
+	this.gridZ = null;
+	this.gridY = null;
+	this.gridX = null;
 }

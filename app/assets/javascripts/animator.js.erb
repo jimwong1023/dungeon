@@ -15,31 +15,57 @@ Animator.prototype.render = function () {
 	this.renderer.render(this.scene, this.camera);
 }
 
-Animator.prototype.addAnim = function (art) {
-	this.scene.add(art.mesh);
+Animator.prototype.createWalls = function (room, direction) {
+	// Need more elegant if statements to account for direction
+	var backWall = new BackWall(room.walls[direction]);
+	if (direction === 3) { direction = -1 }
+	var rightWall = new RightWall(room.walls[direction + 1]);
+	if (direction === 1) { direction = -3 } else if ( direction === 2) { direction = -2 } else if (direction === 1) { direction = -1 }
+	var leftWall = new LeftWall(room.walls[direction + 3]);
+
+	return [backWall, rightWall, leftWall];
 }
 
-Animator.prototype.clearObject = function (art) {
+Animator.prototype.createFloorCeiling = function (floorUrl, ceilUrl) {
+	var floor = new Floor(floorUrl);
+	var ceiling = new Ceiling(ceilUrl);
+
+	console.log(floorUrl, ceilUrl);
+
+	return [floor, ceiling];
+}
+
+Animator.prototype.addAnim = function (artArr) {
+	for ( var i = 0; i < artArr.length; i++ ) {
+		console.log(artArr[i])
+		this.scene.add(artArr[i].mesh);
+	}
+}
+
+Animator.prototype.clearObject = function (artArr) {
 	this.scene.remove(art.mesh);
 }
 
-// $(document).ready(function () {
-// 	var animator = new Animator();
-// 	var rightWall = new RightWall(WALLURLS[3]);
-// 	var leftWall = new LeftWall(WALLURLS[2]);
-// 	var test = new RightWall(WALLURLS[1])
+$(document).ready(function () {
+	// var animator = new Animator();
+	// var rightWall = new RightWall(WALLURLS[3]);
+	// var leftWall = new LeftWall(WALLURLS[2]);
+	// var test = new RightWall(WALLURLS[1])
 
-// 	animator.addAnim(rightWall);
-// 	animator.addAnim(leftWall);
+	// animator.addAnim([rightWall, leftWall]);
 
-// 	animator.render();
+	// animator.render();
 
-// 	setTimeout(function() {
-// 		console.log("FIVE SEC");
-// 		animator.clearObject(rightWall);
+	// setTimeout(function() {
+	// 	console.log("FIVE SEC");
+	// 	animator.clearObject(rightWall);
 
-// 		animator.addAnim(test);
+	// 	animator.addAnim(test);
 
-// 		animator.render();
-// 	}, 2000);
-// })
+	// 	animator.render();
+	// }, 2000);
+	var game = new Game();
+	game.animator.addAnim(game.animator.createWalls(game.grid.gridState[0][0][0], 3));
+	game.animator.addAnim(game.animator.createFloorCeiling(FLOORURLS[0], CEILURLS[0]));
+	game.animator.render();
+})

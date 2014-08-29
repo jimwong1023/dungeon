@@ -1,5 +1,5 @@
 var WALLURLS = ["<%= asset_path('wallpaper0.jpg') %>", "<%= asset_path('wallpaper1.jpg') %>", "<%= asset_path('wallpaper2.jpg') %>", "<%= asset_path('wallpaper3.jpg') %>", "<%= asset_path('wallpaper4.jpg') %>", "<%= asset_path('wallpaper5.jpg') %>"]
-var FLOORURLS = ["<%= asset_path('floor0.jpg') %>", "<%= asset_path('floor1.jpg') %>"]
+var FLOORURLS = ["<%= asset_path('floor0.jpg') %>"]
 var DOORURLS = ["<%= asset_path('door0.jpg') %>"]
 var CEILURLS = ["<%= asset_path('ceiling0.jpg') %>"]
 
@@ -48,8 +48,8 @@ function Ceiling (url) {
 	this.geometry = new THREE.PlaneGeometry( 400, 400, 1, 1 );
 	this.mesh = new THREE.Mesh( this.geometry, this.material );
 
-	this.mesh.rotation.y = Math.PI/2;
-	this.mesh.position.set(0,200,0);
+	this.mesh.rotation.x = Math.PI/2;
+	this.mesh.position.set(0,240,0);
 }
 
 function Floor (url) {
@@ -60,7 +60,7 @@ function Floor (url) {
 	this.geometry = new THREE.PlaneGeometry( 400, 400, 1, 1 );
 	this.mesh = new THREE.Mesh( this.geometry, this.material );
 
-	this.mesh.rotation.y = Math.PI/2;
+	this.mesh.rotation.x = Math.PI/2;
 }
 
 // DOORS
