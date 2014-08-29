@@ -1,0 +1,39 @@
+var YROW = 10
+var XCOL = 10
+var ZDEP = 3
+
+function Game (z, y, x) {
+	this.grid = new grid(x, y, z);
+}
+
+// Grid
+
+function Grid (z, y, x) {
+	this.gridState = [];
+	this.clearGridState(ZDEP, YROW, XCOL);
+}
+
+Grid.prototype.clearGridState = function (z, y, x) {
+	for ( var dep = 0; dep < z; dep++ ) {
+		this.gridState[dep] = [];
+		for ( var row = 0; row < y; row++ ) {
+			this.gridState[dep][row] = [];
+			for ( var col = 0; col < x; col++ ) {
+				var room = new Room();
+				this.gridState[dep][row].push(room);
+			}
+		}
+	}
+}
+
+// Room
+function Room () {
+	this.solid = this.isSolid();
+	this.items = [];
+}
+
+Room.prototype.isSolid = function () {
+	if (Math.random() > 0.2) {
+		return false;
+	}
+}

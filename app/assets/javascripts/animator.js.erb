@@ -3,6 +3,7 @@ function Animator () {
 	this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
 	this.renderer = new THREE.WebGLRenderer();
 	this.renderer.setSize( window.innerWidth, window.innerHeight);
+	
 	document.body.appendChild( this.renderer.domElement );
 	this.look = new THREE.Vector3(0, 100, 0);
 	this.camera.position.set(0, 150, 200);
@@ -18,15 +19,27 @@ Animator.prototype.addAnim = function (art) {
 	this.scene.add(art.mesh);
 }
 
-$(document).ready(function () {
-	var url = "<%= asset_path('wallpaper1.jpg') %>"
-	var url2 = "<%= asset_path('wallpaper2.jpg') %>"
-	var animator = new Animator();
-	var rightWall = new RightWall(WALLURLS[3]);
-	var leftWall = new LeftWall(WALLURLS[2]);
+Animator.prototype.clearObject = function (art) {
+	this.scene.remove(art.mesh);
+}
 
-	animator.addAnim(rightWall);
-	animator.addAnim(leftWall);
+// $(document).ready(function () {
+// 	var animator = new Animator();
+// 	var rightWall = new RightWall(WALLURLS[3]);
+// 	var leftWall = new LeftWall(WALLURLS[2]);
+// 	var test = new RightWall(WALLURLS[1])
 
-	animator.render();
-})
+// 	animator.addAnim(rightWall);
+// 	animator.addAnim(leftWall);
+
+// 	animator.render();
+
+// 	setTimeout(function() {
+// 		console.log("FIVE SEC");
+// 		animator.clearObject(rightWall);
+
+// 		animator.addAnim(test);
+
+// 		animator.render();
+// 	}, 2000);
+// })
