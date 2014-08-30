@@ -5,7 +5,197 @@ var ZDEP = 3;
 function Game (z, y, x) {
 	this.grid = new Grid(z, y, x);
 	this.animator = new Animator();
-	this.players = [];
+	this.player = new Player(0,0,0);
+}
+
+Game.prototype.getInput = function (e) {
+	e.preventDefault();
+	console.log(e.keyCode);
+	var player = this.player
+	var direction = player.direction
+
+	switch (e.keyCode) {
+		case 38: {
+			switch (direction) {
+				case 0: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY - 1, player.gridX)) {
+						player.gridY--;
+						this.update();
+					}
+				}
+				break;
+
+				case 1: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX + 1)) {
+						player.gridX++;
+						this.update();
+					}
+				}
+				break;
+
+				case 2: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY + 1, player.gridX)) {
+						player.gridY++;
+						this.update();
+					}
+				}
+				break;
+
+				case 3: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX - 1)) {
+						player.gridX--;
+						this.update();
+					}
+				}
+			}
+		}
+		break;
+
+		case 39: {
+			switch (direction) {
+				case 0: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX + 1)) {
+						player.gridX++;
+						player.direction = 1;
+						this.update();
+					}
+				}
+				break;
+				case 1: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY + 1, player.gridX)) {
+						player.gridY++;
+						player.direction = 2;
+						this.update();
+					}
+				}
+				break;
+				case 2: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX - 1)) {
+						player.gridX--;
+						player.direction = 3;
+						this.update();
+					}
+				}
+				break;
+				case 3: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY - 1, player.gridX)) {
+						player.gridY--;
+						player.direction = 0;
+						this.update();
+					}
+				}
+				break;
+			}
+		}
+		break;
+
+		case 40: {
+			switch (direction) {
+				case 0: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY + 1, player.gridX)) {
+						player.gridY++;
+						player.direction = 2;
+						this.update();
+					}
+				}
+				break;
+				case 1: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX - 1)) {
+						player.gridX--;
+						player.direction = 3;
+						this.update();
+					}
+				}
+				break;
+				case 2: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY - 1, player.gridX)) {
+						player.gridY--;
+						player.direction = 0;
+						this.update();
+					}
+				}
+				break;
+				case 3: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX + 1)) {
+						player.gridX++;
+						player.direction = 1;
+						this.update();
+					}
+				}
+				break;
+			}
+		}
+		break;
+
+		case 37: {
+			switch (direction) {
+				case 0: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX - 1)) {
+						player.gridX--;
+						player.direction = 3;
+						this.update();
+					}
+				}
+				break;
+				case 1: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY - 1, player.gridX)) {
+						player.gridY--;
+						player.direction = 0;
+						this.update();
+					}
+				}
+				break;
+				case 2: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY, player.gridX + 1)) {
+						player.gridX++;
+						player.direction = 1;
+						this.update();
+					}
+				}
+				break;
+				case 3: {
+					if (this.grid.isLegalMove(player.gridZ, player.gridY + 1, player.gridX)) {
+						player.gridY++;
+						player.direction = 2;
+						this.update();
+					}
+				}
+				break;
+			}
+		}
+		break;
+
+		case 87: {
+			if (this.grid.isLegalMove(player.gridZ - 1, player.gridY, player.gridX)) {
+				player.gridZ--;
+				this.update();
+			}
+		}
+		break;
+
+		case 83: {
+			if (this.grid.isLegalMove(player.gridZ + 1, player.gridY, player.gridX)) {
+				player.gridZ++;
+				this.update();
+			}
+		}
+		break;
+	}
+}
+
+Game.prototype.update = function () {
+	this.animator.clearScene();
+	var direction = this.player.direction;
+	var posZ = this.player.gridZ;
+	var posY = this.player.gridY;
+	var posX = this.player.gridX;
+	console.log(posZ, posY, posX);
+	console.log(direction);
+
+	this.animator.addAnim(this.animator.createWalls(this.grid.gridState[posZ][posY][posX], direction));
+	this.animator.addAnim(this.animator.createFloorCeiling(this.grid.gridState[posZ][posY][posX]));
+	this.animator.addAnim(this.animator.createDoors(this.grid.gridState[posZ][posY][posX], direction, this.grid.legalMoves(posZ, posY, posX)));
+	this.animator.render();
 }
 
 // Grid
@@ -34,7 +224,7 @@ Grid.prototype.clearGridState = function (z, y, x) {
 }
 
 Grid.prototype.isLegalMove = function (newZ, newY, newX) {
-	if (newZ > this.dep || newZ < 0 || newY > this.rows || newY < 0 || newX > this.cols || newX < 0) {
+	if (newZ >= this.dep || newZ < 0 || newY >= this.rows || newY < 0 || newX >= this.cols || newX < 0) {
 		return false;
 	}
 	else if (this.gridState[newZ][newY][newX].solid) {
@@ -123,13 +313,13 @@ Room.prototype.isSolid = function () {
 
 // Player
 
-function Player () {
+function Player (z, y, x) {
 	// 0 True North (looking at grid), 1 East, 2 South, 3 West
 	this.directions = [0,1,2,3];
 	this.direction = 0;
 	this.items = [];
 
-	this.gridZ = null;
-	this.gridY = null;
-	this.gridX = null;
+	this.gridZ = z;
+	this.gridY = y;
+	this.gridX = x;
 }

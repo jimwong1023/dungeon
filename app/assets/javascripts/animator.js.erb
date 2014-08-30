@@ -20,8 +20,8 @@ Animator.prototype.createWalls = function (room, direction) {
 	var backWall = new BackWall(room.walls[direction]);
 	if (direction === 3) { direction = -1 }
 	var rightWall = new RightWall(room.walls[direction + 1]);
-	if (direction === 1) { direction = -3 } else if ( direction === 2) { direction = -2 } else if (direction === 3) { direction = -1 }
-	var leftWall = new LeftWall(room.walls[direction + 3]);
+	if (direction === 1) { direction = -2 } else if ( direction === 2) { direction = -1 } else if (direction === 3) { direction = 0 }
+	var leftWall = new LeftWall(room.walls[direction + 2]);
 
 	return [backWall, rightWall, leftWall];
 }
@@ -34,8 +34,8 @@ Animator.prototype.createFloorCeiling = function (room, direction) {
 }
 
 Animator.prototype.createDoors = function (room, direction, moveArr) {
-	doors = []
-
+	var doors = []
+	// Refactor!
 	if (moveArr[direction] === true) {
 		var backDoor = new BackDoor(room.door);
 		doors.push(backDoor);
@@ -69,8 +69,12 @@ Animator.prototype.addAnim = function (artArr) {
 	}
 }
 
-Animator.prototype.clearObject = function (artArr) {
-	this.scene.remove(art.mesh);
+Animator.prototype.clearScene = function () {
+	var objsToRemove = _.rest(this.scene.children, 1);
+	var that = this;
+	_.each(objsToRemove, function(object) {
+		that.scene.remove(object);
+	})
 }
 
 $(document).ready(function () {
@@ -92,9 +96,10 @@ $(document).ready(function () {
 	// 	animator.render();
 	// }, 2000);
 	var game = new Game(ZDEP, YROW, XCOL);
-	console.log(game.grid.gridState);
-	game.animator.addAnim(game.animator.createWalls(game.grid.gridState[1][5][5], 0));
-	game.animator.addAnim(game.animator.createFloorCeiling(game.grid.gridState[1][5][5]));
-	game.animator.addAnim(game.animator.createDoors(game.grid.gridState[1][5][5], 0, game.grid.legalMoves(1,5,5)));
-	game.animator.render();
+	// game.animator.addAnim(game.animator.createWalls(game.grid.gridState[1][5][5], 0));
+	// game.animator.addAnim(game.animator.createFloorCeiling(game.grid.gridState[1][5][5]));
+	// game.animator.addAnim(game.animator.createDoors(game.grid.gridState[1][5][5], 0, game.grid.legalMoves(1,5,5)));
+	// game.animator.render();
+	game.update();
+	document.onkeydown = game.getInput.bind(game);
 })
