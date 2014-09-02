@@ -10,7 +10,6 @@ function Game (z, y, x) {
 
 Game.prototype.getInput = function (e) {
 	e.preventDefault();
-	console.log(e.keyCode);
 	var player = this.player
 	var direction = player.direction
 
@@ -189,8 +188,6 @@ Game.prototype.update = function () {
 	var posZ = this.player.gridZ;
 	var posY = this.player.gridY;
 	var posX = this.player.gridX;
-	console.log(posZ, posY, posX);
-	console.log(direction);
 
 	this.animator.addAnim(this.animator.createWalls(this.grid.gridState[posZ][posY][posX], direction));
 	this.animator.addAnim(this.animator.createFloorCeiling(this.grid.gridState[posZ][posY][posX]));
@@ -266,7 +263,7 @@ Grid.prototype.legalMoves = function (curZ, curY, curX) {
 	if (this.isLegalMove(curZ - 1, curY, curX)) {
 		moves.push(true);
 	}
-	else { 
+	else {
 		moves.push(false); 
 	}
 	if (this.isLegalMove(curZ + 1, curY, curX)) {

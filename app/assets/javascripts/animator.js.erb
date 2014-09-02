@@ -16,12 +16,18 @@ Animator.prototype.render = function () {
 }
 
 Animator.prototype.createWalls = function (room, direction) {
-	// Need more elegant if statements to account for direction
-	var backWall = new BackWall(room.walls[direction]);
-	if (direction === 3) { direction = -1 }
-	var rightWall = new RightWall(room.walls[direction + 1]);
-	if (direction === 1) { direction = -2 } else if ( direction === 2) { direction = -1 } else if (direction === 3) { direction = 0 }
-	var leftWall = new LeftWall(room.walls[direction + 2]);
+	var backWall, rightWall, leftWall;
+	var temp = direction
+	// Need to refactor
+	backWall = new BackWall(room.walls[direction]);
+	if (direction === 3) {
+	  direction = -1;
+	}
+	rightWall = new RightWall(room.walls[direction + 1]);
+	direction = temp
+	
+	if (direction === 1) { direction = -3 } else if ( direction === 2) { direction = -2 } else if (direction === 3) { direction = -1 }
+	leftWall = new LeftWall(room.walls[direction + 3]);
 
 	return [backWall, rightWall, leftWall];
 }
@@ -35,7 +41,8 @@ Animator.prototype.createFloorCeiling = function (room, direction) {
 
 Animator.prototype.createDoors = function (room, direction, moveArr) {
 	var doors = []
-	// Refactor!
+	var temp = direction
+	// Need to Refactor!
 	if (moveArr[direction] === true) {
 		var backDoor = new BackDoor(room.door);
 		doors.push(backDoor);
@@ -45,6 +52,7 @@ Animator.prototype.createDoors = function (room, direction, moveArr) {
 		var rightDoor = new RightDoor(room.door);
 		doors.push(rightDoor);
 	}
+	direction = temp
 	if (direction === 1) { direction = -3 } else if (direction === 2) { direction = -2 } else if (direction === 3) { direction = -1 }
 	if (moveArr[direction + 3]) {
 		var leftDoor = new LeftDoor(room.door);
@@ -70,11 +78,11 @@ Animator.prototype.addAnim = function (artArr) {
 }
 
 Animator.prototype.clearScene = function () {
-	var objsToRemove = _.rest(this.scene.children, 1);
+	var objsToRemove = _.rest(this.scene.children, 0);
 	var that = this;
 	_.each(objsToRemove, function(object) {
 		that.scene.remove(object);
-	})
+	});
 }
 
 $(document).ready(function () {
