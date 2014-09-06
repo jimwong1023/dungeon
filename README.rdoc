@@ -2,7 +2,7 @@
 
 See it in action HERE[http://jw-dungeon.herokuapp.com/]
 
-CONRTROLS 
+CONTROLS 
 - Move forward (up arrow), right (right arrow), left (left arrow), back (back arrow).
 - Move upstairs (w), downstairs (s). 
 
